@@ -1,0 +1,19 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Ajouter un Produit
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form, {'attr': {'id': 'form_produit'}}) }}
+    {{ form_row(form.name, {'attr': {'id': 'nom_produit'}}) }}
+    {{ form_row(form.description, {'attr': {'id': 'description_produit'}}) }}
+    {{ form_row(form.reference.code, {'attr': {'id': 'reference_produit'}}) }}
+    {{ form_row(form.prix,          {'attr': {'id': 'prix_produit'}}) }}
+    {# {{ form_row(form.createdAt) }} #}
+    {{ form_row(form.categorie,{'attr': {'id': 'categorie_produit'}}) }}
+    {{ form_row(form.distributeur,{'attr': {'id': 'distributeur_produit'}}) }}
+    {{ form_row(form.photos,{'attr': {'id': 'photos_produit'}}) }}
+    {{ form_end(form) }}
+{% endblock %}

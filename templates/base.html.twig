@@ -1,16 +1,34 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <script src="{{ asset('js/script.js') }}"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+        <h1>Your Site Title</h1>
+        <!-- Burger Menu Icon for Small Screens -->
+        <div class="burger-menu">
+            <a id="burger">&#9776;</a>
+        </div>
+    </div>
 
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<nav>
+    <ul>
+        <li><a href="{{ path('app_produits') }}">Afficher Produits</a></li>
+        <li><a href="{{ path('app_ajouter_produits') }}">Ajouter Produits</a></li>
+    </ul>
+</nav>
+</header>
+
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+
+
+</body>
 </html>

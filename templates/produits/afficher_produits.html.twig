@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste des Produits
+{% endblock %}
+
+{% block body %}
+    {% if produits is empty %}
+        <p>Aucun produit disponible.</p>
+    {% else %}
+        <ul>
+            {% for produit in produits %}
+                <li class='each-product'>
+                    <p id="consult_nom_produit">{{ produit.name }}</p>
+                    {% if produit.photos %}
+                        <img src="{{ asset('uploads/' ~ produit.photos) }}" alt="{{ produit.name }}" width="100" id="consult_photos_produit">
+                    {% else %}
+                        <p>Aucune photo disponible.</p>
+                    {% endif %}
+                    <p id="consult_description_produit">{{ produit.description }}</p>
+                    {% if produit.createdAt %}
+                        <br>Créé le : <p id="consult_createdAt_produit">{{ produit.createdAt|date('Y-m-d H:i:s') }}</p>
+                    {% else %}
+                        <p>Aucune date de création disponible.</p>
+                    {% endif %}
+                    
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
