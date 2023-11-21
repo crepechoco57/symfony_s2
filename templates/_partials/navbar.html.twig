@@ -1,0 +1,23 @@
+  <header>
+    <div class="container">
+        <h1>Your Site Title</h1>
+        <!-- Burger Menu Icon for Small Screens -->
+        <div class="burger-menu">
+            <a id="burger">&#9776;</a>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="{{ path('app_produits') }}">Afficher Produits</a></li>
+            <li><a href="{{ path('app_ajouter_produits') }}">Ajouter Produits</a></li>
+            <li><a href="{{ path('app_register') }}">S'enregistrer</a></li>
+            <li><a href="{{ path('app_login') }}">Login</a></li>
+            {% if app.user %}
+        <a href="{{ path('app_logout') }}" class ="btn btndanger">Deconexion</a>
+            {% else %}
+            <a href="{{ path('app_login') }}"></a>
+            {% endif %}
+            {# <li><a href="{{ path('app_logout') }}">Logout</a></li> #}
+        </ul>
+    </nav>
+  </header>

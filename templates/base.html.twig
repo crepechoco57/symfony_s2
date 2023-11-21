@@ -4,31 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <script src="{{ asset('js/script.js') }}"></script>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <!-- Ajoutez le fichier JS Bootstrap (facultatif, mais souvent nécessaire pour les composants interactifs) -->
+    {% endblock %}
+        <!-- JavaScript Bootstrap Bundle with Popper.js CDN -->
+        {% block javascripts %}
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+                integrity="sha384-eXQchayKdPv1LCB9MXN7PrDlI8XrTI5x9nMPUdCOY6P0dH+nV2nW9pd0EIlxvq8H" 
+                crossorigin="anonymous"></script>
+            <script src="{{ asset('js/script.js') }}"></script>
+        {% endblock %}
+    
 </head>
 <body>
-  <header>
-    <div class="container">
-        <h1>Your Site Title</h1>
-        <!-- Burger Menu Icon for Small Screens -->
-        <div class="burger-menu">
-            <a id="burger">&#9776;</a>
-        </div>
-    </div>
-
-<nav>
-    <ul>
-        <li><a href="{{ path('app_produits') }}">Afficher Produits</a></li>
-        <li><a href="{{ path('app_ajouter_produits') }}">Ajouter Produits</a></li>
-    </ul>
-</nav>
-</header>
-
-<div class="container">
-    {% block body %}{% endblock %}
-</div>
+{% include "_partials/navbar.html.twig" %}
 
 
+  {% include "_partials/alerts.html.twig" %}
+  <div class="container">
+      {% block body %}{% endblock %}
+  </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ use App\Entity\Categories;
 use App\Form\ReferencesType;
 use App\Entity\Distributeurs;
 use Symfony\Component\Form\AbstractType;
+use Doctrine\DBAL\Types\DateTimeImmutableType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProduitsType extends AbstractType
 {
@@ -32,10 +35,10 @@ class ProduitsType extends AbstractType
             ->add('prix',MoneyType::class,[
                 'label'=>'prix du produit : ',
             ])
-            ->add('createdAt', DateType::class, [
-                'label' => 'Date de création : ',
-                'widget' => 'single_text', // Utilisez le widget 'single_text' pour les champs de type date
-            ])
+            // ->add('createdAt', DateTimeImmutableType::class, [
+            //     'label' => 'Date de création : ',
+            //     'widget' => 'single_text', // Utilisez le widget 'single_text' pour les champs de type date
+            // ])
             //Formulaire imbriqués:
 
             //Formulaire Enfant (qui demande l'ajout d'une référence) et crée un id automatiquement
@@ -63,11 +66,7 @@ class ProduitsType extends AbstractType
                 
                 
             ])
-            ->add('photos', FileType::class, [
-                'label' => 'Photo du produit : ',
-                'attr' => ['id' => 'photos_produit'],
-                'required' => false, // permet la soumission du formulaire sans photo
-            ])
+       
             ->add('submit', SubmitType::class ,[
             'attr' => ['id' => 'submit_produit']
         ]);

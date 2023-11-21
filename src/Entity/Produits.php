@@ -39,17 +39,14 @@ class Produits
     #[ORM\ManyToMany(targetEntity: Distributeurs::class, inversedBy: 'produits')]
     private Collection $distributeur;
 
-    #[ORM\OneToMany(mappedBy: 'produits', targetEntity: Photos::class)]
-    private Collection $photo;
+
 
 
 
     public function __construct()
     {
         $this->distributeur = new ArrayCollection();
-        $this->createdAt = new \DateTimeImmutable();
-        $this->photo = new ArrayCollection();
-    }
+        $this->createdAt = new \DateTimeImmutable();    }
 
     public function getId(): ?int
     {
@@ -152,34 +149,7 @@ class Produits
         return $this;
     }
 
-    /**
-     * @return Collection<int, Photos>
-     */
-    public function getPhoto(): Collection
-    {
-        return $this->photo;
-    }
 
-    public function addPhoto(Photos $photo): static
-    {
-        if (!$this->photo->contains($photo)) {
-            $this->photo->add($photo);
-            $photo->setProduits($this);
-        }
 
-        return $this;
-    }
-
-    public function removePhoto(Photos $photo): static
-    {
-        if ($this->photo->removeElement($photo)) {
-            // set the owning side to null (unless already changed)
-            if ($photo->getProduits() === $this) {
-                $photo->setProduits(null);
-            }
-        }
-
-        return $this;
-    }
 
 }
