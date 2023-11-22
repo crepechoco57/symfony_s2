@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Produits;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Produits>
@@ -24,6 +25,38 @@ class ProduitsRepository extends ServiceEntityRepository
 //    /**
 //     * @return Produits[] Returns an array of Produits objects
 //     */
+public function getAllProductsByIdDesc() {
+    $produits = $this->getEntityManager()
+    ->createQuery('SELECT p FROM App\Entity\Produits p ORDER BY p.prix DESC')
+    ->getResult();
+    return $produits;
+}
+public function getAllProductsByIdAsc() {
+    $produits = $this->getEntityManager()
+    ->createQuery('SELECT p FROM App\Entity\Produits p ORDER BY p.prix ASC')
+    ->getResult();
+    return $produits;
+}
+public function getProductsByPriceScale($min,$max){
+    $produits = $this->getEntityManager()
+    ->createQuery("
+    SELECT p FROM App\Entity\Produits p
+    WHERE p.prix >= :min AND p.prix <= :max
+    ORDER BY p.prix ASC
+    ")
+    ->setParameter('min', $min)
+    ->setParameter('max', $max)
+    ->getResult();
+
+    return $produits;
+}
+public function getProductByCategory () {
+    $produit_cat = $this->getEntityManager()
+    //Selectionne le nom produit et l'id de la categ , dans categorie (alias c), join categorie,..."p")
+    ->createQuery("SELECT p.name as pname,c.id, c.name as cname FROM APP\Entity\Categories c JOIN c.produits p")
+    ->getResult();
+    return $produit_cat;
+}
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('p')

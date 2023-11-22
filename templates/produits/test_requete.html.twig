@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Detail Du Produit
+{% endblock %}
+
+{% block body %}
+    {% for data in datas %}
+        {% if data is empty %}
+            <p>Aucun produit disponible.</p>
+        {% else %}
+        <ul>
+            <li class='each-product'>
+                <p id="consult_nom_produit">Nom : {{ data.pname }}</p>
+                <p id="consult_reference_produit">Id de la categorie : {{ data.id}}</p>
+                <p id="consult_reference_produit">Id de la categorie : {{ data.cname}}</p>
+            </li>
+        </ul>
+    
+        {% endif %}    
+    {% endfor %}    
+{% endblock %}

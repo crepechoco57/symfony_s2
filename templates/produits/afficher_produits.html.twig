@@ -5,21 +5,39 @@
 {% endblock %}
 
 {% block body %}
+{{ form_start(filtreForm, {'method': 'POST'}) }}
+
+    {{ form_row(filtreForm.prix) }}
+    {{ form_row(filtreForm.filtrerPrix) }}
+    {{ form_row(filtreForm.prix_min) }}
+    {{ form_row(filtreForm.prix_max) }}
+    {# {{ form_row(filtreForm.categorie) }} #}
+
+
+{{ form_end(filtreForm) }}
+        {# <a href="{{ path('app_produit_details_oneBy') }}"><button>findOneBy</button></a> #}
     {% if produits is empty %}
         <p>Aucun produit disponible.</p>
     {% else %}
+    <p>Filtrer par prix descendant</p>
+    <a href="{{ path('app_produitsByIdDesc') }}"><button>prix décroissant</button></a>
+    <p>Filtrer par prix ascendant</p>
+    <a href="{{ path('app_produitsByIdAsc') }}"><button>prix croissant</button></a>
         <ul>
             {% for produit in produits %}
                 <li class='each-product'>
-                    <p id="consult_nom_produit">{{ produit.name }}</p>
-                
-                    <p id="consult_description_produit">{{ produit.description }}</p>
+                <p id="consult_nom_produit">Nom : {{ produit.name }}</p>
+                {# <p id="consult_description_produit"> Description : {{ produit.description }}</p> #}
+                <p id="consult_prix_produit">Prix:  {{ produit.prix }}</p>
+                <p id="consult_reference_produit">Id de la categorie : {{ produit.categorie.id}}</p>
+                <p id="consult_reference_produit">Id de la référence : {{ produit.reference.id}}</p>
                     {% if produit.createdAt %}
                         <br>Créé le : <p id="consult_createdAt_produit">{{ produit.createdAt|date('Y-m-d H:i:s') }}</p>
                     {% else %}
                         <p>Aucune date de création disponible.</p>
-                    {% endif %}
-                    
+                    {% endif %}             
+                            <a href="{{ path('app_produit_details_by', {'id': produit.id}) }}"><button>findBy</button></a>
+                   
                 </li>
             {% endfor %}
         </ul>

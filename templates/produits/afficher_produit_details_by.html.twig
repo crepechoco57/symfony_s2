@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Detail Du Produit
+{% endblock %}
+
+{% block body %}
+    {% if produit is empty %}
+        <p>Aucun produit disponible.</p>
+    {% else %}
+        <ul>
+            <li class='each-product'>
+                <p id="consult_nom_produit">Nom : {{ produit.name }}</p>
+                <p id="consult_description_produit"> Description : {{ produit.description }}</p>
+                <p id="consult_prix_produit">Prix:  {{ produit.prix }}</p>
+                <p id="consult_reference_produit">Id de la categorie : {{ produit.categorie.id}}</p>
+                <p id="consult_reference_produit">Id de la référence : {{ produit.reference.id}}</p>
+                {% if produit.createdAt %}
+                    <br>Créé le : <p id="consult_createdAt_produit">{{ produit.createdAt|date('Y-m-d H:i:s') }}</p>
+                {% else %}
+                    <p>Aucune date de création disponible.</p>
+                {% endif %}
+            </li>
+        </ul>
+    {% endif %}    
+{% endblock %}
