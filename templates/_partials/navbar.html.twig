@@ -10,11 +10,12 @@
             <li><a href="{{ path('app_register') }}">S'enregistrer</a></li>
             <li><a href="{{ path('app_login') }}">Login</a></li>
             {% if app.user %}
+           
         <a href="{{ path('app_logout') }}" class ="btn btndanger">Deconexion</a>
             {% else %}
             <a href="{{ path('app_login') }}"></a>
             {% endif %}
-            {# <li><a href="{{ path('app_logout') }}">Logout</a></li> #}
+        
         </ul>
     </nav>
   </header>

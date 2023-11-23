@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
   class LoginController extends AbstractController
   {
+    
       #[Route('/login', name: 'app_login')]
 
      public function index(AuthenticationUtils $authenticationUtils): Response
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
          // last username entered by the user
          $lastUsername = $authenticationUtils->getLastUsername();
-
+    
           return $this->render('login/index.html.twig', [
              'controller_name' => 'LoginController',
              'last_username' => $lastUsername,

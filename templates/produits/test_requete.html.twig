@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    {% for data in datas %}
+    {# {% for data in datas %}
         {% if data is empty %}
             <p>Aucun produit disponible.</p>
         {% else %}
@@ -16,7 +16,13 @@
                 <p id="consult_reference_produit">Id de la categorie : {{ data.cname}}</p>
             </li>
         </ul>
-    
-        {% endif %}    
-    {% endfor %}    
+        {% endif %}     #}
+    {# {% endfor %}     #}
+    <h2>{{ titre }}</h2>
+    <ul>
+        <li>Nom : {{ datas.name }}</li>
+         <li>Nom : {{ datas.description }}</li>
+        <li>Prix : {{ datas.prix }}</li>
+        <li>Id : {{ datas.id }}</li> 
+    </ul>
 {% endblock %}

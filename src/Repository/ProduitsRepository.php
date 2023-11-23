@@ -57,6 +57,15 @@ public function getProductByCategory () {
     ->getResult();
     return $produit_cat;
 }
+
+public function getLastProduct ($element) {
+    $lastProduct = $this->createQueryBuilder('p')
+    ->orderBy('p.$element', 'DESC')
+    ->setMaxResults(1)
+    ->getQuery()
+    ->getOneOrNullResult();
+    return $lastProduct;
+}
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('p')

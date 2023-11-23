@@ -35,6 +35,9 @@ class ProduitsType extends AbstractType
             ->add('prix',MoneyType::class,[
                 'label'=>'prix du produit : ',
             ])
+            ->add('image', FileType::class, [
+                'label' => 'Image du produit : ',
+            ])
             // ->add('createdAt', DateTimeImmutableType::class, [
             //     'label' => 'Date de création : ',
             //     'widget' => 'single_text', // Utilisez le widget 'single_text' pour les champs de type date

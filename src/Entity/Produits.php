@@ -2,15 +2,22 @@
 
 namespace App\Entity;
 
+use App\Traits\DateTrait;
 use App\Entity\Distributeurs;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitsRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
+#[ORM\HasLifecycleCallbacks]
+
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
+
 class Produits
 {
+    use DateTrait;
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -25,8 +32,6 @@ class Produits
     #[ORM\Column]
     private ?float $prix = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\OneToOne(inversedBy: 'produits', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -39,14 +44,17 @@ class Produits
     #[ORM\ManyToMany(targetEntity: Distributeurs::class, inversedBy: 'produits')]
     private Collection $distributeur;
 
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
-
-
-
+   
     public function __construct()
     {
         $this->distributeur = new ArrayCollection();
-        $this->createdAt = new \DateTimeImmutable();    }
+        $this->createdAt = new \DateTimeImmutable();    
+    }
+
+   
 
     public function getId(): ?int
     {
@@ -85,18 +93,6 @@ class Produits
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -145,6 +141,18 @@ class Produits
     public function removeDistributeur(Distributeurs $distributeur): static
     {
         $this->distributeur->removeElement($distributeur);
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
