@@ -3,7 +3,11 @@
 {% block title %}
     Liste des Produits
 {% endblock %}
-
+  {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <!-- Ajoutez le fichier JS Bootstrap (facultatif, mais souvent nécessaire pour les composants interactifs) -->
+     {% endblock %}
 {% block body %}
 {{ form_start(filtreForm, {'method': 'POST'}) }}
 
@@ -37,9 +41,9 @@
                 <p id="consult_id_produit">Id du produit : {{ produit.id}}</p>
                 
                 {% for photos in produit.photos %}
-               
-                    <img src="{{ asset('img/' ~ photos.name) }}" alt="" class="card-img-top mt-3">
-               
+                <span class="img-container img-list">
+                    <img src="{{ asset('img/' ~ photos.name)}}" alt="" class="img-list card-img-top mt-3">   
+                </span>
                 {% endfor %}
                 
                 

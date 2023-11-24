@@ -26,7 +26,7 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted()&& $form->isValid()){
-
+            //
         }
 
         return $this->render('profile/changer_password.html.twig', [

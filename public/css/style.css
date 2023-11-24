@@ -85,6 +85,11 @@ footer {
 #consult_nom_produit {
   text-decoration: underline;
 }
+.img-list {
+  width: 5%;
+  height: auto;
+  border: 2px solid red;
+}
 /* Responsive styles */
 @media screen and (min-width: 600px) {
   #form_produit {

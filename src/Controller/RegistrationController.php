@@ -91,9 +91,5 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('app_profile');
     }
-    // #[Route('/logout', name: 'app_logout')]
-    // public function logout ()
-    // {
-    //     throw new \LogicException( ('vous etes déconecté'));
-    // }
+
 }

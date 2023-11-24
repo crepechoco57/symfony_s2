@@ -15,6 +15,7 @@
                 <p id="consult_prix_produit">Prix:  {{ produit.prix }}</p>
                 <p id="consult_reference_produit">Id de la categorie : {{ produit.categorie.id}}</p>
                 <p id="consult_reference_produit">Id de la référence : {{ produit.reference.id}}</p>
+    
                 {% if produit.createdAt %}
                     <br>Créé le : <p id="consult_createdAt_produit">{{ produit.createdAt|date('Y-m-d H:i:s') }}</p>
                 {% else %}

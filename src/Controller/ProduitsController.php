@@ -6,19 +6,20 @@ use App\Entity\Photos;
 use App\Entity\Produits;
 use App\Entity\Categories;
 use App\Form\ProduitsType;
+use App\Entity\Distributeurs;
 use App\Form\FiltreProduitType;
 use App\Services\MessageService;
-use App\Repository\ProduitsRepository;
 use App\Services\ImageUploadService;
 use App\Services\SimpleUploadService;
+use App\Repository\ProduitsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProduitsController extends AbstractController{
 // //Test DISTINCT et JOIN
@@ -30,6 +31,7 @@ class ProduitsController extends AbstractController{
 //     ]);
 // }
 
+//Test Service
 #[Route('/produits/messages', name: 'app_message_produit')]
 public function afficherMessage(MessageService $messageService) :Response {
     $message = $messageService->aficherMessageService();
@@ -61,8 +63,8 @@ public function afficherProduitsJointure(Request $request,ProduitsRepository $pr
        ]);
    }
     
-    //Utilisation du Repository (prix descendant)
-    #[Route('/produitsByIdDesc', name: 'app_produitsByIdDesc')]
+//Utilisation du Repository (prix descendant)
+#[Route('/produitsByIdDesc', name: 'app_produitsByIdDesc')]
 public function afficherProduitsDesc(Request $request,ProduitsRepository $produitsRepository): Response
 {
     $filtreForm = $this->createForm(FiltreProduitType::class);
@@ -111,7 +113,7 @@ public function afficherProduitDetailBy(ProduitsRepository $produitsRepository,i
         'produit' => $produitsRepository->find($id)
     ]);
 }
-//Utilisation findBy 
+//Afficher -> Utilisation findAll + findBy
 #[Route('/produits', name: 'app_produits')]
 public function afficherProduitDetailOneBy(
     Request $request,ManagerRegistry $doctrine,
@@ -143,6 +145,8 @@ public function afficherProduitDetailOneBy(
         'filtreForm' => $filtreForm->createView(),
     ]);
 }
+
+//Ajouter
 #[Route('/ajouter-produits', name: 'app_ajouter_produits')]
 public function ajouterProduits(
     Request $request, 
@@ -171,27 +175,27 @@ public function ajouterProduits(
                     $new_photos->setName($new_photo);
                     $produits->addPhoto($new_photos);
 
-                    $separator ='-';
-                    $slug = trim($slugger->slug($form->get('name')->getData(),$separator)->lower());
+                    //$separator ='-';
+                   //$slug = trim($slugger->slug($form->get('name')->getData(),$separator)->lower());
                     // $produits->setSlug($slug);
 
                     $em->persist($produits);
                     $em->flush();
                 }
-            }
-             
+            } 
         }
-
     return $this->render('produits/ajouter_produits.html.twig', [
         'form' => $form->createView(),
-        
     ]);
 }
+
+// Modifier
 #[Route('/produits/{id}/modifier', name: 'app_modifier_produit')]
     public function modifierProduit(
 
         EntityManagerInterface $em, ManagerRegistry $doctrine,int $id,Request $request,): Response
     {
+        $photoRepo = $doctrine->getRepository(Photos::class);
         $produitsRepository = $doctrine->getRepository(Produits::class);
         $produit = $produitsRepository->find($id);
 
@@ -213,6 +217,7 @@ public function ajouterProduits(
         return $this->render('produits/modifier_produit.html.twig', [
             'form' => $form->createView(),
             'produit' => $produit,
+            'photos' => $photoRepo -> findBy(['produits'=> $produit])
         ]);
     }
    
