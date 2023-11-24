@@ -47,11 +47,15 @@ class Produits
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[ORM\OneToMany(mappedBy: 'produits', targetEntity: photos::class, cascade:['persist'])]
+    private Collection $photos;
+
    
     public function __construct()
     {
         $this->distributeur = new ArrayCollection();
-        $this->createdAt = new \DateTimeImmutable();    
+        $this->createdAt = new \DateTimeImmutable();
+        $this->photos = new ArrayCollection();    
     }
 
    
@@ -153,6 +157,36 @@ class Produits
     public function setImage(string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, photos>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(photos $photo): static
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setProduits($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(photos $photo): static
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getProduits() === $this) {
+                $photo->setProduits(null);
+            }
+        }
 
         return $this;
     }

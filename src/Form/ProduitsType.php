@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Produits;
+use App\Form\PhotosType;
 use App\Entity\Categories;
 use App\Form\ReferencesType;
 use App\Entity\Distributeurs;
@@ -27,7 +28,6 @@ class ProduitsType extends AbstractType
         $builder
             ->add('name',TextType::class, [
                 'label'=>'nom du produit : ',
-               
             ])
             ->add('description',TextareaType::class , [
                 'label' => 'Description du produit : ',
@@ -35,9 +35,15 @@ class ProduitsType extends AbstractType
             ->add('prix',MoneyType::class,[
                 'label'=>'prix du produit : ',
             ])
-            ->add('image', FileType::class, [
+            ->add('photos', CollectionType::class, [
+                'entry_type'=> PhotosType::class,
+                'allow_add'=>true,
+                'allow_delete'=>true,
+                'by_reference'=>false,
+                'mapped'=>false,
                 'label' => 'Image du produit : ',
             ])
+            
             // ->add('createdAt', DateTimeImmutableType::class, [
             //     'label' => 'Date de création : ',
             //     'widget' => 'single_text', // Utilisez le widget 'single_text' pour les champs de type date

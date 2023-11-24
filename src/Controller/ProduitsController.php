@@ -151,7 +151,9 @@ public function ajouterProduits(Request $request, EntityManagerInterface $em, Im
 
             $image = $form->get('image')->getData();
             $dossier = 'produits';
+            
             $fichier = $imageUploadService->uploadImage($image,$dossier);
+            dd($fichier);
             if ($fichier){
                 $produits->setImage($fichier);
                 $this->addFlash('success','Votre image a bien été ajoutée');
@@ -161,7 +163,8 @@ public function ajouterProduits(Request $request, EntityManagerInterface $em, Im
         }
 
     return $this->render('produits/ajouter_produits.html.twig', [
-        'form' => $form->createView()
+        'form' => $form->createView(),
+        
     ]);
 }
 #[Route('/produits/{id}/modifier', name: 'app_modifier_produit')]

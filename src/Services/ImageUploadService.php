@@ -9,13 +9,16 @@ class ImageUploadService{
     public function __construct(private ParameterBagInterface $params) {}
 
     public function uploadImage(UploadedFile $image , ?string $folder =''){
-        
+        //renomme image et change extension
         $fichier =md5(uniqid(rand(),true)) .'.webp';
-        $path = $this->params->get('image_directory') .$folder;
+        //recupere le path paramétré dans yaml, ajoute le dossier passé en parametre
+        //par exemple , yaml :blabla/blabla/folder
+        $path = $this->params->get('photos_directory') .$folder;
 
         if (!file_exists($path .'/')) {
             mkdir ($path . '/', 0777, true);
         }    
+        //move dans le path + le fichier et son extension modifie
         $image->move($path . '/', $fichier);
 
         return $fichier;
