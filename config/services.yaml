@@ -21,7 +21,7 @@ services:
       - "../src/Entity/"
       - "../src/Kernel.php"
 parameters:
-  photos_directory: "%kernel.project_dir%/public/uploads/"
+  photos_directory: "%kernel.project_dir%/public/img/"
   # add more service definitions when explicit configuration is needed
   App\Twig\CustomTwigExtension.php:
     tags: ["twig.extension"]

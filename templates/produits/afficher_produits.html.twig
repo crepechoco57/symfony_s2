@@ -24,23 +24,32 @@
     <p>Filtrer par prix ascendant</p>
     <a href="{{ path('app_produitsByIdAsc') }}"><button>prix croissant</button></a>
     <p>Selectionner le plus...</p>
-    <a href="{{ path('app_QueryBuilder') }}"><button>Select Desc</button></a>
+    <a href="{{ path('app_QueryBuilder') }}"><button>Produit </button></a>
         <ul>
             {% for produit in produits %}
                 <li class='each-product'>
                 <p id="consult_nom_produit">Nom : {{ produit.name }}</p>
                 {# <p id="consult_description_produit"> Description : {{ produit.description }}</p> #}
                 <p id="consult_prix_produit">Prix:  {{ produit.prix }}</p>
-                <p>{{ produit.image }}</p>
+                {# <p>{{ produit.image }}</p> #}
                 <p id="consult_reference_produit">Id de la categorie : {{ produit.categorie.id}}</p>
                 <p id="consult_reference_produit">Id de la référence : {{ produit.reference.id}}</p>
+                <p id="consult_id_produit">Id du produit : {{ produit.id}}</p>
+                
+                {% for photos in produit.photos %}
+               
+                    <img src="{{ asset('img/' ~ photos.name) }}" alt="" class="card-img-top mt-3">
+               
+                {% endfor %}
+                
+                
                     {% if produit.createdAt %}
                         <br>Créé le : <p id="consult_createdAt_produit">{{ produit.createdAt|date('Y-m-d H:i:s') }}</p>
                     {% else %}
                         <p>Aucune date de création disponible.</p>
                     {% endif %}             
-                            <a href="{{ path('app_produit_details_by', {'id': produit.id}) }}"><button>findBy</button></a>
-                            <a href="{{ path('app_modifier_produit', {'id': produit.id}) }}"><button>Modifier</button></a>
+                <a href="{{ path('app_produit_details_by', {'id': produit.id}) }}"><button>findBy</button></a>
+                <a href="{{ path('app_modifier_produit', {'id': produit.id}) }}"><button>Modifier</button></a>
 
                 </li>
             {% endfor %}

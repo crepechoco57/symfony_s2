@@ -60,7 +60,7 @@ public function getProductByCategory () {
 
 public function getLastProduct ($element) {
     $lastProduct = $this->createQueryBuilder('p')
-    ->orderBy('p.$element', 'DESC')
+    ->orderBy("p.$element",' DESC')
     ->setMaxResults(1)
     ->getQuery()
     ->getOneOrNullResult();

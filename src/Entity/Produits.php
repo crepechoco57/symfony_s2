@@ -44,10 +44,10 @@ class Produits
     #[ORM\ManyToMany(targetEntity: Distributeurs::class, inversedBy: 'produits')]
     private Collection $distributeur;
 
-    #[ORM\Column(length: 255)]
-    private ?string $image = null;
+    // #[ORM\Column(length: 255)]
+    // private ?string $image = null;
 
-    #[ORM\OneToMany(mappedBy: 'produits', targetEntity: photos::class, cascade:['persist'])]
+    #[ORM\OneToMany(mappedBy: 'produits', targetEntity: Photos::class, cascade:['persist'])]
     private Collection $photos;
 
    
@@ -149,17 +149,17 @@ class Produits
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
+    // public function getImage(): ?string
+    // {
+    //     return $this->image;
+    // }
 
-    public function setImage(string $image): static
-    {
-        $this->image = $image;
+    // public function setImage(string $image): static
+    // {
+    //     $this->image = $image;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, photos>

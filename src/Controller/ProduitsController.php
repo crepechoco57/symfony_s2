@@ -10,6 +10,7 @@ use App\Form\FiltreProduitType;
 use App\Services\MessageService;
 use App\Repository\ProduitsRepository;
 use App\Services\ImageUploadService;
+use App\Services\SimpleUploadService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProduitsController extends AbstractController{
 // //Test DISTINCT et JOIN
@@ -36,16 +38,28 @@ public function afficherMessage(MessageService $messageService) :Response {
         'message'=> $message
     ]);
 }
-//Test QueryBuilder
+// //Test QueryBuilder
 #[Route('/QueryBuilder', name: 'app_QueryBuilder')]
 public function afficherProduitsJointure(Request $request,ProduitsRepository $produitsRepository): Response
 {
-    $element = 'id' ;
-    return $this->render('produits/test_requete.html.twig', [
+    $element = 'prix' ;
+    
+    return $this->render('produits/test_query.html.twig', [
         'datas' => $produitsRepository->getLastProduct($element),
         'titre' => $element
     ]);
 }
+   //Utilisation du Repository (prix Ascendant)
+   #[Route('/produitsByIdAsc', name: 'app_produitsByIdAsc')]
+   public function afficherProduitsAsc(Request $request,ProduitsRepository $produitsRepository): Response
+   {
+       $filtreForm = $this->createForm(FiltreProduitType::class);
+       $filtreForm->handleRequest($request);
+       return $this->render('produits/afficher_produits.html.twig', [
+           'produits' => $produitsRepository->getAllProductsByIdAsc(),
+           'filtreForm' => $filtreForm->createView(),
+       ]);
+   }
     
     //Utilisation du Repository (prix descendant)
     #[Route('/produitsByIdDesc', name: 'app_produitsByIdDesc')]
@@ -88,17 +102,7 @@ public function afficherProduitFilterBetween(
         'filtreForm' => $filtreForm->createView(),
     ]);
 }
-   //Utilisation du Repository (prix Ascendant)
-   #[Route('/produitsByIdAsc', name: 'app_produitsByIdAsc')]
-   public function afficherProduitsAsc(Request $request,ProduitsRepository $produitsRepository): Response
-   {
-       $filtreForm = $this->createForm(FiltreProduitType::class);
-       $filtreForm->handleRequest($request);
-       return $this->render('produits/afficher_produits.html.twig', [
-           'produits' => $produitsRepository->getAllProductsByIdAsc(),
-           'filtreForm' => $filtreForm->createView(),
-       ]);
-   }
+
 //Utilisation find(avec injection id dans url)
 #[Route('/produits/{id}', name: 'app_produit_details_by')]
 public function afficherProduitDetailBy(ProduitsRepository $produitsRepository,int $id): Response
@@ -140,7 +144,12 @@ public function afficherProduitDetailOneBy(
     ]);
 }
 #[Route('/ajouter-produits', name: 'app_ajouter_produits')]
-public function ajouterProduits(Request $request, EntityManagerInterface $em, ImageUploadService $imageUploadService): Response
+public function ajouterProduits(
+    Request $request, 
+    EntityManagerInterface $em, 
+    SluggerInterface $slugger,
+    SimpleUploadService $simpleUploadService
+): Response
 {
     $produits = new Produits();
     $form = $this->createForm(ProduitsType::class, $produits);
@@ -149,17 +158,28 @@ public function ajouterProduits(Request $request, EntityManagerInterface $em, Im
 
     if ($form->isSubmitted() && $form->isValid()) {
 
-            $image = $form->get('image')->getData();
-            $dossier = 'produits';
-            
-            $fichier = $imageUploadService->uploadImage($image,$dossier);
-            dd($fichier);
-            if ($fichier){
-                $produits->setImage($fichier);
-                $this->addFlash('success','Votre image a bien été ajoutée');
+            $photos = $request->files->all();
+            if($photos == null) {
+                $this->addFlash('danger','chaque produit doit contenir au moins UNE photo');
+                return $this->redirectToRoute('app_ajouter_produits');
+            } else {
+                $images= $photos['produits']['photos'];
+                foreach($images as $image){
+                    $new_photos=new Photos();
+                    $image_name = $image['name'];
+                    $new_photo = $simpleUploadService->uploadImage($image_name);
+                    $new_photos->setName($new_photo);
+                    $produits->addPhoto($new_photos);
+
+                    $separator ='-';
+                    $slug = trim($slugger->slug($form->get('name')->getData(),$separator)->lower());
+                    // $produits->setSlug($slug);
+
+                    $em->persist($produits);
+                    $em->flush();
+                }
             }
-              $em->persist($produits);
-              $em->flush();
+             
         }
 
     return $this->render('produits/ajouter_produits.html.twig', [

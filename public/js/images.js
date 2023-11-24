@@ -1,28 +1,37 @@
-alert("salut");
-
 const addFormToCollection = (e) => {
   const collectionPhoto = document.querySelector(
     e.currentTarget.dataset.collection
   );
-  console.log(collectionPhoto);
+
   const item = document.createElement("div");
-  console.log(item);
   item.className = "mt-3";
   item.innerHTML = collectionPhoto.dataset.prototype.replace(
     /__name__/g,
     collectionPhoto.dataset.index
   );
+  console.log(item);
+
   let btnSupprimer = document.createElement("button");
-  btnSupprimer.className = "btn btn-info mt-3 btn-supprimmer";
+  btnSupprimer.className = "btn btn-info mt-3 btn-supprimer";
+  btnSupprimer.id = "btn-supprimer";
   btnSupprimer.innerHTML = "supprimer l'image";
   item.appendChild(btnSupprimer);
-  document.querySelectorAll(".btnSupprimer").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      e.currentTarget.parentElement.remove();
-    })
-  );
+  collectionPhoto.append(item);
+  collectionPhoto.dataset.index++;
+  document
+    .querySelectorAll(".btn-supprimer")
+    .forEach((btn) =>
+      btn.addEventListener("click", (e) =>
+        e.currentTarget.parentElement.remove()
+      )
+    );
 };
 
-document
-  .querySelectorAll(".btn-ajouter")
-  .forEach((btn) => btn.addEventListener("click", addFormToCOllection));
+document.addEventListener("DOMContentLoaded", function () {
+  document
+    .querySelectorAll(".btn-ajouter")
+    .forEach((btn) => btn.addEventListener("click", addFormToCollection));
+});
+// getElementsByClassName("btn-ajouter").addEventListener("click", function () {
+//   alert("salut");
+// });

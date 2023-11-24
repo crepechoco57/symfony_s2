@@ -18,7 +18,7 @@ class ImageUploadService{
         if (!file_exists($path .'/')) {
             mkdir ($path . '/', 0777, true);
         }    
-        //move dans le path + le fichier et son extension modifie
+        //move dans le pathcompilé ci dessus + le fichier et son extension modifie
         $image->move($path . '/', $fichier);
 
         return $fichier;
